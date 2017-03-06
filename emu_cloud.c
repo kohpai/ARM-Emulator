@@ -162,7 +162,7 @@ uint8_t get_symbol_values(
         }
     }
 
-    printf("progress: %u\n", progress);
+    /* printf("progress: %u\n", progress); */
     if (progress < 4)
         return 2;
 
@@ -277,7 +277,8 @@ FAILED_READ:
 
 static void hook_uart_tx(int fd, char tx)
 {
-    write(fd, &tx, 1);
+    printf("%c", tx);
+    /* write(fd, &tx, 1); */
 }
 
 static char hook_uart_rx(int fd)
@@ -335,7 +336,7 @@ int main(int argc, char *argv[])
     uc_engine   *uc;
     uc_hook     trace_code;
     struct symbols sym;
-    int         fd_pipe_in, fd_pipe_out;
+    /* int         fd_pipe_in, fd_pipe_out; */
     uint8_t     result;
     uint32_t    main_sym,
                 unicorn_uart_init,
@@ -347,12 +348,13 @@ int main(int argc, char *argv[])
     switch (argc) {
         case 1:
             printf("Please specify an ELF file\n");
-        case 2:
-            printf("Please specify an pipe.in file\n");
-        case 3:
-            printf("Please specify an pipe.out file\n");
+        /* case 2: */
+        /*     printf("Please specify an pipe.in file\n"); */
+        /* case 3: */
+        /*     printf("Please specify an pipe.out file\n"); */
             return -1;
-        case 4:
+        /* case 4: */
+        case 2:
             break;
     }
 
@@ -377,21 +379,21 @@ int main(int argc, char *argv[])
         return -3;
     }
 
-    printf("waiting for pipe connection ...\n");
+    /* printf("waiting for pipe connection ...\n"); */
 
-    fd_pipe_in  = open(argv[2], O_RDONLY);
-    fd_pipe_out = open(argv[3], O_NOCTTY|O_SYNC|O_WRONLY);
+    /* fd_pipe_in  = open(argv[2], O_RDONLY); */
+    /* fd_pipe_out = open(argv[3], O_NOCTTY|O_SYNC|O_WRONLY); */
 
-    if (fd_pipe_in == 0 || fd_pipe_out == 0) {
-        printf("openning pipes error\n");
-        return -4;
-    }
+    /* if (fd_pipe_in == 0 || fd_pipe_out == 0) { */
+    /*     printf("openning pipes error\n"); */
+    /*     return -4; */
+    /* } */
 
     sym.unicorn_uart_init   = unicorn_uart_init;
     sym.unicorn_uart_tx     = unicorn_uart_tx;
     sym.unicorn_uart_rx     = unicorn_uart_rx;
-    sym.fd_pipe_in          = fd_pipe_in;
-    sym.fd_pipe_out         = fd_pipe_out;
+    /* sym.fd_pipe_in          = fd_pipe_in; */
+    /* sym.fd_pipe_out         = fd_pipe_out; */
 
     uc_hook_add(
             uc,
@@ -402,17 +404,21 @@ int main(int argc, char *argv[])
             addr_min,
             addr_len);
 
-    printf("Load ELF file Success\n"
-            "main:              0x%x\n"
-            "unicorn_uart_init: 0x%x\n"
-            "unicorn_uart_tx:   0x%x\n"
-            "unicorn_uart_rx:   0x%x\n",
-            main_sym,
-            unicorn_uart_init,
-            unicorn_uart_tx,
-            unicorn_uart_rx);
+    /* printf("Load ELF file Success\n" */
+    /*         "main:              0x%x\n" */
+    /*         "unicorn_uart_init: 0x%x\n" */
+    /*         "unicorn_uart_tx:   0x%x\n" */
+    /*         "unicorn_uart_rx:   0x%x\n", */
+    /*         main_sym, */
+    /*         unicorn_uart_init, */
+    /*         unicorn_uart_tx, */
+    /*         unicorn_uart_rx); */
 
-    err = uc_emu_start(uc, main_sym|1, addr_min + addr_len, 0, 0);
+    err = uc_emu_start(
+            uc,
+            main_sym|1,
+            addr_min + addr_len,
+            10 * 1000 * 1000, 0);
 
     /* if (err) { */
     /*     printf("uc_emu_start(), error: %u: %s\n", err, uc_strerror(err)); */

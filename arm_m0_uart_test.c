@@ -23,19 +23,22 @@ static void print(char *p)
 
 int main(int argc, char *argv[])
 {
-    unsigned char exiting = 0;
+    /* unsigned char exiting = 0; */
     print("Hello World!\n");
+    print("Hello Kohpai!\n");
+    print("Hello Ox!\n");
+    print("Hello George!\n");
 
-    while (!exiting) {
-        unsigned c = unicorn_uart_rx();
-        switch (c) {
-            case 'q': 
-                print("\nQuit!\n"); 
-                exiting = 1;
-                break;
-            default : unicorn_uart_tx((char)c); break;
-        };
-    }
+    /* while (!exiting) { */
+    /*     unsigned c = unicorn_uart_rx(); */
+    /*     switch (c) { */
+    /*         case 'q':  */
+    /*             print("\nQuit!\n");  */
+    /*             exiting = 1; */
+    /*             break; */
+    /*         default : unicorn_uart_tx((char)c); break; */
+    /*     }; */
+    /* } */
 
     return 0;
 } 
